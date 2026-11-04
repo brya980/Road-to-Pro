@@ -60,47 +60,69 @@ const KEY='road_to_pro_v1';
 const days=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
 const shortDays=['Mo','Di','Mi','Do','Fr','Sa','So'];
 const plans=[
-{title:'Dribbling, 1v1 & linker Fuß',type:'Einzeltraining',time:'35–45 Min.',note:'Fokus: enge Ballführung, Tempowechsel und nach der Finte explosiv wegstarten.',tasks:[
-['Aufwärmen mit Ball','5–8 Min. locker bewegen, beide Füße nutzen.','Warm-up'],
-['Enge Ballführung','4 × 45 Sek.: kleine Kontakte innen/außen, Kopf regelmäßig heben.','Dribbling'],
-['Finte + Beschleunigung','4 × 5 Wiederholungen je Seite: Übersteiger oder Körpertäuschung, dann 3–5 m explosiv.','1v1'],
-['Slalom ohne Hütchen','Nutze Schuhe oder sichere Markierungen; 4 Durchgänge mit engem Ballkontakt.','Dribbling'],
-['Linker Fuß: kurze Pässe','3 × 12 kontrollierte Pässe gegen eine Wand, falls erlaubt und sicher.','Linker Fuß'],
-['Freestyle hochhalten','3 lockere Versuche, beide Füße abwechseln; Technik vor Rekord.','Ballgefühl']]},
-{title:'Erster Kontakt & Passspiel',type:'Einzeltraining',time:'30–40 Min.',note:'Fokus: vororientieren, erster Kontakt in den freien Raum und beidfüßig passen.',tasks:[
-['Aufwärmen','5–8 Min. locker bewegen, Mobilität und Ballkontakte.','Warm-up'],
-['Wandpass – rechter Fuß','3 × 15 Pässe; vor jedem Pass kurz den Kopf heben.','Passen'],
-['Wandpass – linker Fuß','3 × 10–12 Pässe mit kontrollierter Innenseite.','Linker Fuß'],
-['Erster Kontakt seitlich','3 × 10 je Seite: Pass gegen Wand, ersten Kontakt seitlich wegnehmen, zurückpassen.','Ballannahme'],
-['Annahme mit Richtungswechsel','3 × 8 je Seite: Ball stoppen, mit zweitem Kontakt in neue Richtung.','Ballkontrolle'],
-['Freestyle hochhalten','3 kurze Runden, ruhig und kontrolliert.','Ballgefühl']]},
-{title:'Vereinstraining',type:'Verein',time:'Nach Vorgabe des Trainers',note:'Mittwoch ist Vereinstraining. Folge den Vorgaben deines Trainers; zusätzliche harte Einheiten sind nicht nötig.',tasks:[
-['Pünktlich sein & bereit sein','Wasser, Schienbeinschoner und passende Schuhe einpacken.','Vorbereitung'],
-['Technik-Fokus wählen','Heute besonders auf ersten Kontakt und Passqualität achten.','Fokus'],
-['Kommunikation & Scannen','Vor der Annahme umschauen und Mitspieler klar ansprechen.','Spielverständnis'],
-['Kurze Reflexion','Nach dem Training eine Sache notieren, die gut lief, und eine zum Verbessern.','Lernen']]},
-{title:'Abschluss & Linksaußen-Aktionen',type:'Einzeltraining',time:'30–40 Min.',note:'Fokus: vom linken Flügel nach innen kommen, Kopf hoch und kontrolliert abschließen. Nur mit sicherem Platz trainieren.',tasks:[
-['Aufwärmen','5–8 Min. lockere Bewegung und Ballgefühl.','Warm-up'],
-['Ball mitnehmen & Schnitt nach innen','4 × 5 je Seite: ersten Kontakt in den Raum, dann kontrolliert Richtung Mitte dribbeln.','Ballannahme'],
-['Abschluss-Technik ohne Druck','3 × 6 ruhige Schüsse auf ein sicheres Ziel; Technik statt Kraft.','Torschuss'],
-['Linker Fuß: Pass oder Abschluss','3 × 8 kontrollierte Wiederholungen, nur wenn schmerzfrei.','Linker Fuß'],
-['1v1-Bewegung ohne Gegner','3 × 5: Körpertäuschung, Ball eng halten, Richtungswechsel.','Dribbling'],
-['Cooldown','3–5 Min. locker gehen und Beine entspannen.','Regeneration']]},
-{title:'Vereinstraining',type:'Verein',time:'Nach Vorgabe des Trainers',note:'Freitag ist Vereinstraining. Erholung und die Trainingsinhalte des Trainers haben Vorrang.',tasks:[
-['Ausrüstung prüfen','Wasser, Schienbeinschoner und Schuhe bereitlegen.','Vorbereitung'],
-['Im Training aktiv sein','Anspielbar bleiben und nach einem Pass direkt weiterlaufen.','Spielverständnis'],
-['Umschalten','Nach Ballverlust schnell zurückarbeiten, nach Ballgewinn Breite anbieten.','Taktik'],
-['Kurze Reflexion','Eine konkrete Frage für den Trainer aufschreiben.','Lernen']]},
-{title:'Tempo, Flanken & Wiederholung',type:'Einzeltraining',time:'25–35 Min.',note:'Halte es moderat, besonders wenn am Wochenende ein Spiel ist. Keine maximalen Sprints ohne gute Aufwärmung.',tasks:[
-['Aufwärmen','8 Min. zunehmend dynamisch, ohne Vollsprints.','Warm-up'],
-['Flügel-Laufweg mit Ball','4 × 20–30 Sek. kontrolliert: breit starten, Ball mitnehmen, Kopf heben.','Linksaußen'],
-['Flanke oder Zielpass','3 × 6 je Fuß auf ein sicheres Ziel; Genauigkeit vor Kraft.','Passen'],
-['Tempowechsel mit Ball','4 × 10 Sek. zügig, dazwischen ausreichend gehen und erholen.','Tempo'],
-['Wochen-Highlight wiederholen','Wähle eine Übung, die diese Woche noch unsicher war.','Wiederholung']]},
-{title:'Ruhetag & Erholung',type:'Ruhetag',time:'Erholung',note:'Sonntag ist dein Ruhetag. Ein Spaziergang oder leichte Beweglichkeit ist okay, aber kein Pflichttraining.',tasks:[
-['Ruhe und Schlaf priorisieren','Erhole dich und versuche eine regelmäßige Schlafenszeit einzuhalten.','Erholung'],
-['Wasser & ausgewogene Mahlzeiten','Iss regelmäßig und trinke über den Tag verteilt.','Alltag'],
-['Wochenreflexion (optional)','Was lief gut? Was willst du nächste Woche verbessern?','Lernen']]}
+  {
+    day:'Montag',
+    title:'Vereinstraining',
+    tasks:[
+      'Aktiv am Mannschaftstraining teilnehmen',
+      'Auf erste Ballannahme achten',
+      'Mutig ins 1-gegen-1 gehen'
+    ]
+  },
+  {
+    day:'Dienstag',
+    title:'Weak Foot & First Touch',
+    tasks:[
+      'Linker Fuß: Pässe und Ballkontrolle',
+      'Erste Ballannahme mit links',
+      'Ballmitnahme in freie Räume'
+    ]
+  },
+  {
+    day:'Mittwoch',
+    title:'Vereinstraining',
+    tasks:[
+      'Aktiv am Mannschaftstraining teilnehmen',
+      'Freie Räume erkennen',
+      'Schnelle Entscheidungen treffen'
+    ]
+  },
+  {
+    day:'Donnerstag',
+    title:'Space Creator & Mobility',
+    tasks:[
+      'Freilaufen und Räume schaffen',
+      'Spielverständnis trainieren',
+      'Beweglichkeit'
+    ]
+  },
+  {
+    day:'Freitag',
+    title:'Technik & Mentalität',
+    tasks:[
+      'Linker Fuß: Pässe und Schüsse',
+      'Erste Ballannahme',
+      'Ruhig unter Druck bleiben'
+    ]
+  },
+  {
+    day:'Samstag',
+    title:'Athletik',
+    tasks:[
+      'Schnelligkeit (nur wenn erholt)',
+      'Ausdauer moderat',
+      'Koordination'
+    ]
+  },
+  {
+    day:'Sonntag',
+    title:'Regeneration',
+    tasks:[
+      'Erholung',
+      'Leichte Mobilität nach Bedarf',
+      'Woche reflektieren'
+    ]
+  }
 ];
 const drills=[
 ['Enge Ballführung','Bleib mit dem Ball in kleinen Schritten nah am Fuß. Nutze Innen- und Außenseite beider Füße. Hebe alle paar Kontakte den Kopf.','3–4 Runden à 30–45 Sekunden.'],
