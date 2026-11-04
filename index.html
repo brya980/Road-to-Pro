@@ -269,12 +269,23 @@ document.getElementById('planXP').textContent=(n*10)+' XP';
 document.getElementById('planBar').style.width=(n/p.tasks.length*100)+'%';
 document.getElementById('planProgress').textContent=`${n} von ${p.tasks.length} Aufgaben erledigt`;
 
-document.getElementById('drillLibrary').innerHTML=`
 <div class="card">
 <h3>⏱️ Dein Trainingstimer</h3>
-<div id="drillTimer" style="font-size:36px;font-weight:bold;text-align:center;margin:15px">45</div>
-<button class="primary" onclick="startDrillTimer()">45 Sekunden starten</button>
-<button onclick="stopDrillTimer()">Stoppen</button>
+
+<div id="drillTimer" style="font-size:42px;font-weight:bold;text-align:center;margin:15px">00:45</div>
+
+<div class="row">
+<button class="btn secondary" onclick="setDrillTimer(30)">30s</button>
+<button class="btn secondary" onclick="setDrillTimer(45)">45s</button>
+<button class="btn secondary" onclick="setDrillTimer(60)">60s</button>
+<button class="btn secondary" onclick="setDrillTimer(90)">90s</button>
+</div>
+
+<div class="row" style="margin-top:12px">
+<button class="btn" onclick="startDrillTimer()">Start</button>
+<button class="btn secondary" onclick="pauseDrillTimer()">Pause</button>
+<button class="btn ghost" onclick="stopDrillTimer()">Reset</button>
+</div>
 </div>
 `+drills.map((d,i)=>`
 <div class="card">
@@ -286,6 +297,57 @@ document.getElementById('drillLibrary').innerHTML=`
 <strong>↗</strong>
 </a>
 </div>`).join('');
+}
+let drillTimerInterval = null;
+let drillTimerRemaining = 45;
+
+function updateDrillTimer(){
+  const display = document.getElementById('drillTimer');
+  if(!display) return;
+
+  const minutes = Math.floor(drillTimerRemaining / 60);
+  const seconds = drillTimerRemaining % 60;
+
+  display.textContent =
+    String(minutes).padStart(2,'0') + ':' +
+    String(seconds).padStart(2,'0');
+}
+
+function setDrillTimer(seconds){
+  pauseDrillTimer();
+  drillTimerRemaining = seconds;
+  updateDrillTimer();
+}
+
+function startDrillTimer(){
+  if(drillTimerInterval) return;
+
+  if(drillTimerRemaining <= 0) drillTimerRemaining = 45;
+
+  updateDrillTimer();
+
+  drillTimerInterval = setInterval(()=>{
+    drillTimerRemaining--;
+    updateDrillTimer();
+
+    if(drillTimerRemaining <= 0){
+      pauseDrillTimer();
+      showToast('Zeit ist um! Gute Arbeit ⚽');
+    }
+  },1000);
+}
+
+function pauseDrillTimer(){
+  if(drillTimerInterval){
+    clearInterval(drillTimerInterval);
+    drillTimerInterval = null;
+  }
+}
+
+function stopDrillTimer(){
+  pauseDrillTimer();
+  drillTimerRemaining = 45;
+  updateDrillTimer();
 }
 function renderRoadmap(){document.getElementById('phases').innerHTML=phases.map((p,i)=>`<div class="phase"><div class="period">${p[0]}</div><h3>${p[1]}</h3><p>${p[2]}</p><div class="task" style="padding-bottom:0;border:0"><input type="checkbox" ${state.milestones.includes(i)?'checked':''} onchange="toggleMilestone(${i},this.checked)"><label><strong>Meilenstein erreicht</strong><span class="desc">Nur abhaken, wenn du ihn wirklich erreicht hast.</span></label></div></div>`).join('');let n=state.milestones.length;document.getElementById('roadCount').textContent=n+'/6';document.getElementById('roadBar').style.width=n/6*100+'%'}
 function toggleMilestone(i,on){state.milestones=on?[...new Set([...state.milestones,i])]:state.milestones.filter(x=>x!==i);save()}
