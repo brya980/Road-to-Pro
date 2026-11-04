@@ -256,48 +256,67 @@ function renderHome(){document.getElementById('xpNum').textContent=state.xp;docu
   renderClubs();
   renderStats();
 }
+
 function renderTraining(){
-document.getElementById('dayButtons').innerHTML=shortDays.map((d,i)=>`<button class="${selectedDay===i?'active':''}" onclick="selectedDay=${i};renderTraining()">${d}<span class="dot">${dayDone(i)===plans[i].tasks.length?'✓':''}</span></button>`).join('');
+  document.getElementById('dayButtons').innerHTML =
+    shortDays.map((d,i)=>`
+      <button class="${selectedDay===i?'active':''}"
+        onclick="selectedDay=${i};renderTraining()">
+        ${d}
+        <span class="dot">${dayDone(i)===plans[i].tasks.length?'✓':''}</span>
+      </button>
+    `).join('');
 
-let p=plans[selectedDay],n=dayDone(selectedDay);
+  let p=plans[selectedDay],n=dayDone(selectedDay);
 
-document.getElementById('planTitle').textContent=days[selectedDay]+' – '+p.title;
-document.getElementById('planMeta').textContent=p.type+' · '+p.time;
-document.getElementById('planNote').textContent=p.note;
-document.getElementById('planTasks').innerHTML=p.tasks.map((t,i)=>taskHTML(selectedDay,i,t)).join('');
-document.getElementById('planXP').textContent=(n*10)+' XP';
-document.getElementById('planBar').style.width=(n/p.tasks.length*100)+'%';
-document.getElementById('planProgress').textContent=`${n} von ${p.tasks.length} Aufgaben erledigt`;
+  document.getElementById('planTitle').textContent =
+    days[selectedDay]+' – '+p.title;
+  document.getElementById('planMeta').textContent =
+    p.type+' · '+p.time;
+  document.getElementById('planNote').textContent=p.note;
+  document.getElementById('planTasks').innerHTML =
+    p.tasks.map((t,i)=>taskHTML(selectedDay,i,t)).join('');
+  document.getElementById('planXP').textContent=(n*10)+' XP';
+  document.getElementById('planBar').style.width =
+    (n/p.tasks.length*100)+'%';
+  document.getElementById('planProgress').textContent =
+    `${n} von ${p.tasks.length} Aufgaben erledigt`;
 
-<div class="card">
-<h3>⏱️ Dein Trainingstimer</h3>
-
-<div id="drillTimer" style="font-size:42px;font-weight:bold;text-align:center;margin:15px">00:45</div>
-
-<div class="row">
-<button class="btn secondary" onclick="setDrillTimer(30)">30s</button>
-<button class="btn secondary" onclick="setDrillTimer(45)">45s</button>
-<button class="btn secondary" onclick="setDrillTimer(60)">60s</button>
-<button class="btn secondary" onclick="setDrillTimer(90)">90s</button>
-</div>
-
-<div class="row" style="margin-top:12px">
-<button class="btn" onclick="startDrillTimer()">Start</button>
-<button class="btn secondary" onclick="pauseDrillTimer()">Pause</button>
-<button class="btn ghost" onclick="stopDrillTimer()">Reset</button>
-</div>
-</div>
-`+drills.map((d,i)=>`
-<div class="card">
-<h3>${d[0]}</h3>
-<p class="smalltext">${d[1]}</p>
-<span class="tag red">${d[2]}</span>
-<a class="video-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(d[0]+' Fußballtraining Anleitung')}">
-<div>▶ Video-Anleitungen suchen<span>YouTube-Suche – Videos vor dem Nachmachen prüfen</span></div>
-<strong>↗</strong>
-</a>
-</div>`).join('');
+  document.getElementById('drillLibrary').innerHTML = `
+    <div class="card">
+      <h3>⏱️ Dein Trainingstimer</h3>
+      <div id="drillTimer"
+        style="font-size:42px;font-weight:bold;text-align:center;margin:15px">
+        00:45
+      </div>
+      <div class="row">
+        <button class="btn secondary" onclick="setDrillTimer(30)">30s</button>
+        <button class="btn secondary" onclick="setDrillTimer(45)">45s</button>
+        <button class="btn secondary" onclick="setDrillTimer(60)">60s</button>
+        <button class="btn secondary" onclick="setDrillTimer(90)">90s</button>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" onclick="startDrillTimer()">Start</button>
+        <button class="btn secondary" onclick="pauseDrillTimer()">Pause</button>
+        <button class="btn ghost" onclick="stopDrillTimer()">Reset</button>
+      </div>
+    </div>
+  ` + drills.map((d,i)=>`
+    <div class="card">
+      <h3>${d[0]}</h3>
+      <p class="smalltext">${d[1]}</p>
+      <span class="tag red">${d[2]}</span>
+      <a class="video-link" target="_blank" rel="noopener"
+        href="https://www.youtube.com/results?search_query=${encodeURIComponent(d[0]+' Fußballtraining Anleitung')}">
+        <div>▶ Video-Anleitungen suchen
+          <span>YouTube-Suche – Videos vor dem Nachmachen prüfen</span>
+        </div>
+        <strong>↗</strong>
+      </a>
+    </div>
+  `).join('');
 }
+
 let drillTimerInterval = null;
 let drillTimerRemaining = 45;
 
