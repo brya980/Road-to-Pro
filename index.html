@@ -60,69 +60,83 @@ const KEY='road_to_pro_v1';
 const days=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
 const shortDays=['Mo','Di','Mi','Do','Fr','Sa','So'];
 const plans=[
-  {
-    day:'Montag',
-    title:'Vereinstraining',
-    tasks:[
-      'Aktiv am Mannschaftstraining teilnehmen',
-      'Auf erste Ballannahme achten',
-      'Mutig ins 1-gegen-1 gehen'
-    ]
-  },
-  {
-    day:'Dienstag',
-    title:'Weak Foot & First Touch',
-    tasks:[
-      'Linker Fuß: Pässe und Ballkontrolle',
-      'Erste Ballannahme mit links',
-      'Ballmitnahme in freie Räume'
-    ]
-  },
-  {
-    day:'Mittwoch',
-    title:'Vereinstraining',
-    tasks:[
-      'Aktiv am Mannschaftstraining teilnehmen',
-      'Freie Räume erkennen',
-      'Schnelle Entscheidungen treffen'
-    ]
-  },
-  {
-    day:'Donnerstag',
-    title:'Space Creator & Mobility',
-    tasks:[
-      'Freilaufen und Räume schaffen',
-      'Spielverständnis trainieren',
-      'Beweglichkeit'
-    ]
-  },
-  {
-    day:'Freitag',
-    title:'Technik & Mentalität',
-    tasks:[
-      'Linker Fuß: Pässe und Schüsse',
-      'Erste Ballannahme',
-      'Ruhig unter Druck bleiben'
-    ]
-  },
-  {
-    day:'Samstag',
-    title:'Athletik',
-    tasks:[
-      'Schnelligkeit (nur wenn erholt)',
-      'Ausdauer moderat',
-      'Koordination'
-    ]
-  },
-  {
-    day:'Sonntag',
-    title:'Regeneration',
-    tasks:[
-      'Erholung',
-      'Leichte Mobilität nach Bedarf',
-      'Woche reflektieren'
-    ]
-  }
+{
+title:'Vereinstraining',
+type:'Vereinstraining',
+time:'Nach Teamplan',
+note:'Fokus auf Mannschaftstraining und Spielverhalten.',
+tasks:[
+['Aktiv mittrainieren','Konzentriert am Training teilnehmen.','Verein'],
+['Erste Ballannahme','Vor der Annahme den Raum prüfen.','Technik'],
+['Mut im 1-gegen-1','Als Linksaußen mutig bleiben.','LW']
+]
+},
+{
+title:'Linker Fuß & Ballannahme',
+type:'Einzeltraining',
+time:'30–45 Min.',
+note:'Saubere Technik und viele kontrollierte Ballkontakte.',
+tasks:[
+['Linker Fuß','Pässe und Ballkontrolle mit links.','Technik'],
+['Erste Ballannahme','Mit links und rechts kontrollieren.','Technik'],
+['Ballmitnahme','Den Ball in freie Räume mitnehmen.','LW']
+]
+},
+{
+title:'Vereinstraining',
+type:'Vereinstraining',
+time:'Nach Teamplan',
+note:'Fokus auf Spieltempo und Entscheidungen.',
+tasks:[
+['Aktiv mittrainieren','Konzentriert am Training teilnehmen.','Verein'],
+['Freie Räume erkennen','Vor der Ballannahme umschauen.','Taktik'],
+['Schnell entscheiden','Den nächsten Spielzug früh erkennen.','Taktik']
+]
+},
+{
+title:'Spielverständnis & Beweglichkeit',
+type:'Einzeltraining',
+time:'25–35 Min.',
+note:'Leicht und kontrolliert trainieren.',
+tasks:[
+['Freilaufen','Mit Laufwegen anspielbar werden.','Taktik'],
+['Räume schaffen','Mit Richtungswechseln Platz gewinnen.','LW'],
+['Beweglichkeit','Lockere Mobilitätsübungen.','Mobilität']
+]
+},
+{
+title:'Technik & Mentalität',
+type:'Einzeltraining',
+time:'30–40 Min.',
+note:'Technik und Konzentration verbessern.',
+tasks:[
+['Linker Fuß','Pässe und Schüsse kontrolliert üben.','Technik'],
+['Erste Ballannahme','Saubere Ballkontrolle trainieren.','Technik'],
+['Mentalität','Ruhig bleiben und konzentriert arbeiten.','Kopf']
+]
+},
+{
+title:'Optionales Athletiktraining',
+type:'Optional',
+time:'20–30 Min.',
+note:'Nur wenn du ausgeruht bist und kein Spiel ansteht.',
+tasks:[
+['Schnelligkeit','Kontrollierte Laufübungen.','Athletik'],
+['Koordination','Locker und sauber bewegen.','Athletik'],
+['Wochenrückblick','Fortschritte und Ziele notieren.','Reflexion']
+]
+},
+{
+title:'Regeneration',
+type:'Erholung',
+time:'Ruhetag',
+note:'Erholung ist ein wichtiger Teil deiner Entwicklung.',
+tasks:[
+['Erholen','Kein intensives Zusatztraining.','Pause'],
+['Mobilität','Nur locker und nach Bedarf.','Erholung'],
+['Woche reflektieren','Ein Ziel für nächste Woche setzen.','Planung']
+]
+}
 ];
 const drills=[
 ['Linker Fuß – Passkontrolle',
@@ -345,6 +359,7 @@ ${weaknesses.map(s=>`<p>${s.name}: ${s.value}/10</p>`).join('')}
 <p class="smalltext">Abgehakte Trainingsaufgaben</p>
 </div>
 `;
+}
 function saveSkills(){skillNames.forEach(s=>state.skills[s]=Number(document.getElementById('sk-'+s).value));save();showToast('Fähigkeiten gespeichert')}
 function weekKeys(){let out=[];for(let i=0;i<7;i++){let d=new Date();d.setDate(d.getDate()-i);out.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'))}return out}
 function streak(){let n=0,d=new Date();for(let i=0;i<366;i++){let k=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');if((state.history[k]||0)>0){n++;d.setDate(d.getDate()-1)}else if(i===0){d.setDate(d.getDate()-1);let prev=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');if((state.history[prev]||0)>0){n++;d.setDate(d.getDate()-1)}else break}else break}return n}
