@@ -236,7 +236,37 @@ function go(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle
 function toggleTask(day,i,checked){let k=taskKey(day,i);if(checked&&!state.done[k]){state.done[k]=true;state.xp+=10;state.history[todayKey()]=(state.history[todayKey()]||0)+1;showToast('+10 XP – stark!')}else if(!checked&&state.done[k]){delete state.done[k];state.xp=Math.max(0,state.xp-10);state.history[todayKey()]=Math.max(0,(state.history[todayKey()]||0)-1)}save()}
 function taskHTML(day,i,t){return `<div class="task ${isDone(day,i)?'done':''}"><input type="checkbox" ${isDone(day,i)?'checked':''} aria-label="${t[0]}" onchange="toggleTask(${day},${i},this.checked)"><label><strong>${t[0]}</strong><span class="desc">${t[1]}</span><span class="tag">${t[2]}</span></label></div>`}
 function renderHome(){document.getElementById('xpNum').textContent=state.xp;document.getElementById('levelNum').textContent=xpForLevel();document.getElementById('doneNum').textContent=allDone();document.getElementById('statsXP').textContent=state.xp;document.getElementById('statsDone').textContent=allDone();document.getElementById('streakNum').textContent=streak();let d=getDayIndex(),p=plans[d],n=dayDone(d),total=p.tasks.length;document.getElementById('todayLabel').textContent=days[d]+' · '+p.time;document.getElementById('todayTitle').textContent=p.title;document.getElementById('todayType').textContent=p.type;document.getElementById('todayDesc').textContent=p.note;document.getElementById('todayBar').style.width=(n/total*100)+'%';document.getElementById('todayProgress').textContent=`${n} von ${total} Aufgaben erledigt`;document.getElementById('homeTasks').innerHTML=p.tasks.slice(0,3).map((t,i)=>taskHTML(d,i,t)).join('')+`<button class="btn secondary small" style="margin-top:10px" onclick="go('training')">Alle Aufgaben ansehen</button>`;document.getElementById('skillsHome').innerHTML=skillNames.slice(0,6).map(s=>`<div class="skillrow"><span>${s}</span><div class="bar" style="margin:0"><span style="width:${(state.skills[s]||1)/3*100}%"></span></div><strong>${state.skills[s]||1}/3</strong></div>`).join('')}
-function renderTraining(){document.getElementById('dayButtons').innerHTML=shortDays.map((d,i)=>`<button class="${selectedDay===i?'active':''}" onclick="selectedDay=${i};renderTraining()">${d}<span class="dot">${dayDone(i)===plans[i].tasks.length?'✓':''}</span></button>`).join('');let p=plans[selectedDay],n=dayDone(selectedDay);document.getElementById('planTitle').textContent=days[selectedDay]+' – '+p.title;document.getElementById('planMeta').textContent=p.type+' · '+p.time;document.getElementById('planNote').textContent=p.note;document.getElementById('planTasks').innerHTML=p.tasks.map((t,i)=>taskHTML(selectedDay,i,t)).join('');document.getElementById('planXP').textContent=(n*10)+' XP';document.getElementById('planBar').style.width=(n/p.tasks.length*100)+'%';document.getElementById('planProgress').textContent=`${n} von ${p.tasks.length} Aufgaben erledigt`;document.getElementById('drillLibrary').innerHTML=drills.map((d,i)=>`<div class="card"><h3>${d[0]}</h3><p class="smalltext">${d[1]}</p><span class="tag red">${d[2]}</span><a class="video-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(d[0]+' Fußballtraining Anleitung')}"><div>▶ Video-Anleitungen suchen<span>YouTube-Suche – Videos vor dem Nachmachen prüfen</span></div><strong>↗</strong></a></div>`).join('')}
+function renderTraining(){
+document.getElementById('dayButtons').innerHTML=shortDays.map((d,i)=>`<button class="${selectedDay===i?'active':''}" onclick="selectedDay=${i};renderTraining()">${d}<span class="dot">${dayDone(i)===plans[i].tasks.length?'✓':''}</span></button>`).join('');
+
+let p=plans[selectedDay],n=dayDone(selectedDay);
+
+document.getElementById('planTitle').textContent=days[selectedDay]+' – '+p.title;
+document.getElementById('planMeta').textContent=p.type+' · '+p.time;
+document.getElementById('planNote').textContent=p.note;
+document.getElementById('planTasks').innerHTML=p.tasks.map((t,i)=>taskHTML(selectedDay,i,t)).join('');
+document.getElementById('planXP').textContent=(n*10)+' XP';
+document.getElementById('planBar').style.width=(n/p.tasks.length*100)+'%';
+document.getElementById('planProgress').textContent=`${n} von ${p.tasks.length} Aufgaben erledigt`;
+
+document.getElementById('drillLibrary').innerHTML=`
+<div class="card">
+<h3>⏱️ Dein Trainingstimer</h3>
+<div id="drillTimer" style="font-size:36px;font-weight:bold;text-align:center;margin:15px">45</div>
+<button class="primary" onclick="startDrillTimer()">45 Sekunden starten</button>
+<button onclick="stopDrillTimer()">Stoppen</button>
+</div>
+`+drills.map((d,i)=>`
+<div class="card">
+<h3>${d[0]}</h3>
+<p class="smalltext">${d[1]}</p>
+<span class="tag red">${d[2]}</span>
+<a class="video-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(d[0]+' Fußballtraining Anleitung')}">
+<div>▶ Video-Anleitungen suchen<span>YouTube-Suche – Videos vor dem Nachmachen prüfen</span></div>
+<strong>↗</strong>
+</a>
+</div>`).join('');
+}
 function renderRoadmap(){document.getElementById('phases').innerHTML=phases.map((p,i)=>`<div class="phase"><div class="period">${p[0]}</div><h3>${p[1]}</h3><p>${p[2]}</p><div class="task" style="padding-bottom:0;border:0"><input type="checkbox" ${state.milestones.includes(i)?'checked':''} onchange="toggleMilestone(${i},this.checked)"><label><strong>Meilenstein erreicht</strong><span class="desc">Nur abhaken, wenn du ihn wirklich erreicht hast.</span></label></div></div>`).join('');let n=state.milestones.length;document.getElementById('roadCount').textContent=n+'/6';document.getElementById('roadBar').style.width=n/6*100+'%'}
 function toggleMilestone(i,on){state.milestones=on?[...new Set([...state.milestones,i])]:state.milestones.filter(x=>x!==i);save()}
 
